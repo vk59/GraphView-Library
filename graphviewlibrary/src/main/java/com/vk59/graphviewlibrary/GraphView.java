@@ -1,6 +1,5 @@
 package com.vk59.graphviewlibrary;
 
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -13,18 +12,15 @@ import android.view.View;
 import java.util.ArrayList;
 
 
-
-
 public class GraphView extends View {
     private ArrayList<GraphData> allGraphData = new ArrayList<>();
     private ArrayList<ArrayList<Moment>> moments = new ArrayList<>();
     private ArrayList<Integer> colors = new ArrayList<>();
     private ArrayList<String> labels = new ArrayList<>();
 
-    private boolean drawing = false;
     private boolean isInitialized = false;
     private boolean isLegendEnable = true;
-    private boolean isRemoved = false;
+//    private boolean isRemoved = false;
 
     private String xName = "";
     private String yName = "";
@@ -70,10 +66,6 @@ public class GraphView extends View {
         }
     }
 
-    private void setDrawing(boolean drawing) {
-        this.drawing = drawing;
-    }
-
     public void addGraphData(GraphData data) {
         moments.add(data.getData());
         colors.add(data.getColor());
@@ -83,7 +75,6 @@ public class GraphView extends View {
     }
 
     public void drawGraph() {
-        setDrawing(true);
         invalidate();
     }
 
@@ -105,7 +96,7 @@ public class GraphView extends View {
         allGraphData.remove(index);
         colors.remove(index);
         labels.remove(index);
-        isRemoved = true;
+//        isRemoved = true;
         invalidate();
     }
 
@@ -114,7 +105,7 @@ public class GraphView extends View {
         moments.removeAll(moments);
         colors.removeAll(colors);
         labels.removeAll(labels);
-        isRemoved = true;
+//        isRemoved = true;
         invalidate();
     }
 
@@ -142,7 +133,6 @@ public class GraphView extends View {
                     setNoDataText(canvas);
                 }
             } finally {
-                setDrawing(false);
             }
         }
     }
@@ -219,9 +209,7 @@ public class GraphView extends View {
         }
     }
 
-
     private void drawGrid(Canvas canvas) {
-
         Paint paintGrid = new Paint();
         paintGrid.setColor(getResources().getColor(R.color.grid));
         paintGrid.setStrokeWidth(1f);
@@ -237,7 +225,6 @@ public class GraphView extends View {
                     padding + screenHeight, paintGrid);
         }
     }
-
 
     private void drawText(Canvas canvas) {
         int textSize = (int) (padding * 0.5);
@@ -277,7 +264,6 @@ public class GraphView extends View {
     }
 
     private void drawNamesOfAxis(Canvas canvas) {
-        // names of Axis
         int nameAxisSize = (int) ((int) padding * 0.7f);
 
         Paint paintAxis = new Paint();
@@ -366,6 +352,6 @@ public class GraphView extends View {
             if (graph.getMaxY() > maxY) maxY = graph.getMaxY();
             if (graph.getMinY() < minY) minY = graph.getMinY();
         }
-        isRemoved = false;
+//        isRemoved = false;
     }
 }
