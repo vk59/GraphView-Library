@@ -101,10 +101,10 @@ public class GraphView extends View {
     }
 
     public void removeAllGraphData() {
-        allGraphData.removeAll(allGraphData);
-        moments.removeAll(moments);
-        colors.removeAll(colors);
-        labels.removeAll(labels);
+        allGraphData.clear();
+        moments.clear();
+        colors.clear();
+        labels.clear();
 //        isRemoved = true;
         invalidate();
     }
