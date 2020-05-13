@@ -14,6 +14,6 @@ allprojects {
 
 ```gradle
 dependencies {
-    implementation 'com.github.vk59:GraphView-Library:0.1.1'
+    implementation 'com.github.vk59:GraphView-Library:1.0.1'
 }
 ```
