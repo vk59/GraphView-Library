@@ -20,7 +20,6 @@ public class GraphView extends View {
 
     private boolean isInitialized = false;
     private boolean isLegendEnable = true;
-//    private boolean isRemoved = false;
 
     private String xName = "";
     private String yName = "";
@@ -67,11 +66,21 @@ public class GraphView extends View {
     }
 
     public void addGraphData(GraphData data) {
-        moments.add(data.getData());
-        colors.add(data.getColor());
-        labels.add(data.getLabel());
-        allGraphData.add(data);
-        minMaxInit(data);
+        try {
+            moments.add(data.getData());
+            colors.add(data.getColor());
+            labels.add(data.getLabel());
+            allGraphData.add(data);
+            minMaxInit(data);
+        } catch (NullPointerException e) {
+
+        }
+    }
+
+    public void addMomentToGraphData(Moment moment) {
+        allGraphData.get(moments.size() - 1).getData().add(moment);
+        moments.get(moments.size() - 1).add(moment);
+        invalidate();
     }
 
     public void drawGraph() {
@@ -96,16 +105,14 @@ public class GraphView extends View {
         allGraphData.remove(index);
         colors.remove(index);
         labels.remove(index);
-//        isRemoved = true;
         invalidate();
     }
 
-    public void removeAllGraphData() {
+    public void clear() {
         allGraphData.clear();
         moments.clear();
         colors.clear();
         labels.clear();
-//        isRemoved = true;
         invalidate();
     }
 
@@ -116,24 +123,22 @@ public class GraphView extends View {
     }
 
     private void drawView(Canvas canvas) {
-        if (canvas != null) {
-            try {
-                canvas.drawColor(Color.WHITE);
-                if (allGraphData != null && allGraphData.size() > 0) {
-                    getMinMaxValues();
-                    setScreenSettings(canvas);
-                    drawGrid(canvas);
-                    drawText(canvas);
-                    drawNamesOfAxis(canvas);
-                    drawGraphs(canvas);
-                    if (isLegendEnable) {
-                        drawLegend(canvas);
-                    }
-                } else {
-                    setNoDataText(canvas);
+        try {
+            canvas.drawColor(Color.WHITE);
+            if (moments != null && moments.size() > 0) {
+                getMinMaxValues();
+                setScreenSettings(canvas);
+                drawGrid(canvas);
+                drawText(canvas);
+                drawNamesOfAxis(canvas);
+                drawGraphs(canvas);
+                if (isLegendEnable) {
+                    drawLegend(canvas);
                 }
-            } finally {
+            } else {
+                setNoDataText(canvas);
             }
+        } finally {
         }
     }
 
@@ -201,7 +206,6 @@ public class GraphView extends View {
                     float stopX = (nextMoment.getX() - minX) * stepX + padding;
                     float stopY = normalY((nextMoment.getY() - minY) * stepY)
                             - max(padding, paddingLegend) - paddingY - paddingBottom;
-                    Log.d("GRAPH #", "#" + graphNum + "# " + startX + " :: " + stopY);
 
                     canvas.drawLine(startX, startY, stopX, stopY, paintGraph);
                 }
@@ -245,18 +249,17 @@ public class GraphView extends View {
         float cStepTextY = (maxY - minY) / 5;
 
         for (int i = countOfDivisions - 1; i > 0; i--) {
-            // X Axis
+
             float valueX = (countOfDivisions - i) * cStepTextX + minX;
             canvas.drawText(
-                    Float.toString(roundFloat(valueX, getDecimal(cStepTextX))),
+                    roundFloat(valueX, cStepTextX),
                     (countOfDivisions - i) * stepGridX + padding,
                     screenHeight + padding + paddingY,
                     paintTextHorizontal);
-
             // Y Axis
             float valueY = (countOfDivisions - i) * cStepTextY + minY;
             canvas.drawText(
-                    Float.toString(roundFloat(valueY, getDecimal(cStepTextY))),
+                    roundFloat(valueY, cStepTextY),
                     0 + padding,
                     i * stepGridY + padding,
                     paintTextVertical);
@@ -319,26 +322,40 @@ public class GraphView extends View {
         return getHeight() - y;
     }
 
-    private float roundFloat(float a, int decimalPlaces) {
-        float b = 1;
-        for (int i = 0; i < decimalPlaces; i++) {
-            b *= 10;
+    private String roundFloat(float a, float decimalPlaces) {
+        int base = 0;
+        String result = Float.toString(a);
+        if (decimalPlaces > 0.0001f) {
+            if (decimalPlaces < 1) {
+                while (decimalPlaces < 10) {
+                    decimalPlaces *= 10;
+                    base++;
+                }
+            } else {
+                if (decimalPlaces >= 1 && decimalPlaces < 10) {
+                    base++;
+                }
+            }
+            switch (base)
+            {
+                case 1:
+                    result = String.format("%.1f", a);
+                    break;
+                case 2:
+                    result = String.format("%.2f", a);
+                    break;
+                case 3:
+                    result = String.format("%.3f", a);
+                    break;
+                case 4:
+                    result = String.format("%.4f", a);
+                    break;
+                default:
+                    result = String.format("%.0f", a);
+                    break;
+            }
         }
-        int preRes = (int) Math.round(a * b);
-        float result = ((float) preRes) / b;
         return result;
-    }
-
-    private int getDecimal(float interval) {
-        if ((int) (interval) / 10 >= 10) {
-            return 0;
-        }
-        int countOfNum = 0;
-        while (interval < 1) {
-            interval *= 10;
-            countOfNum++;
-        }
-        return countOfNum + 1;
     }
 
     private void getMinMaxValues() {
@@ -352,6 +369,5 @@ public class GraphView extends View {
             if (graph.getMaxY() > maxY) maxY = graph.getMaxY();
             if (graph.getMinY() < minY) minY = graph.getMinY();
         }
-//        isRemoved = false;
     }
 }

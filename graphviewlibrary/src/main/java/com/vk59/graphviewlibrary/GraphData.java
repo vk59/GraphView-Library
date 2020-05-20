@@ -1,8 +1,11 @@
 package com.vk59.graphviewlibrary;
 
+
+import android.util.Log;
+
 import java.util.ArrayList;
 
-public class    GraphData {
+public class GraphData {
     private int color;
     private String label;
     private ArrayList<Moment> data;
@@ -38,19 +41,19 @@ public class    GraphData {
         for (Moment moment : data) {
             float x = moment.getX();
             float y = moment.getY();
-            if (x < minX) minX = x;
-            if (x > maxX) maxX = x;
-            if (y < minY) minY = y;
-            if (y > maxY) maxY = y;
+            minX = Math.min(x, minX);
+            maxX = Math.max(x, maxX);
+            minY = Math.min(y, minY);
+            maxY = Math.max(y, maxY);
         }
     }
 
     public void addData(float x, float y) {
         this.data.add(new Moment(x, y));
-        if (x < minX) minX = x;
-        if (x > maxX) maxX = x;
-        if (y < minY) minY = y;
-        if (y > maxY) maxY = y;
+        minX = Math.min(x, minX);
+        maxX = Math.max(x, maxX);
+        minY = Math.min(y, minY);
+        maxY = Math.max(y, maxY);
     }
 
     public ArrayList<Moment> getData() {
