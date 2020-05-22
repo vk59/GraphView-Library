@@ -3,4 +3,6 @@
     <string name="chartAxisTime">Time, sec</string>
     <string name="chartAxisPotential">Potential, V</string>
     <string name="chartAxisCurrent">Current, uA</string>
+    <string name="button_stop">Stop</string>
+    <string name="button_start">Start</string>
 </resources>

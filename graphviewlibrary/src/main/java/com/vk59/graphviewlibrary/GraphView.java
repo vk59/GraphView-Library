@@ -369,5 +369,13 @@ public class GraphView extends View {
             if (graph.getMaxY() > maxY) maxY = graph.getMaxY();
             if (graph.getMinY() < minY) minY = graph.getMinY();
         }
+        if (maxX == minX) {
+            maxX = maxX + 3 * 0.1f;
+            minX = minX - 2 * 0.1f;
+        }
+        if (maxY == minY) {
+            maxY = maxY + 3 * 0.1f;
+            minY = minY - 2 * 0.1f;
+        }
     }
 }

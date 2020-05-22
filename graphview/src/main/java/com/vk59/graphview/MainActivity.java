@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -30,7 +29,7 @@ public class MainActivity extends AppCompatActivity
     private GraphData graphTC;
     private GraphData graphPC;
     private GraphView graphView;
-    private int currentAxes = 3;
+    private int currentAxes = 0;
 
     private RadioGroup switcherAxises;
     private Button buttonStop;
@@ -66,9 +65,9 @@ public class MainActivity extends AppCompatActivity
         graphView = findViewById(R.id.graphView);
         dataView = findViewById(R.id.dataView);
         int color = Color.rgb(61, 165, 244);
-        graphPC = new GraphData(new ArrayList<Moment>(), color, " ");
-        graphTC = new GraphData(new ArrayList<Moment>(), color, " ");
-        graphTP = new GraphData(new ArrayList<Moment>(), color, " ");
+        graphPC = new GraphData(new ArrayList<Moment>(), color, "Sinusoid");
+        graphTC = new GraphData(new ArrayList<Moment>(), color, "Sinusoid");
+        graphTP = new GraphData(new ArrayList<Moment>(), color, "Sinusoid");
         graphData = graphTP;
     }
 
@@ -97,22 +96,22 @@ public class MainActivity extends AppCompatActivity
     private RadioGroup.OnCheckedChangeListener onSwitchAxises = new RadioGroup.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
-            switch (checkedId) {
-                case R.id.radioGraphPT:
-                    currentAxes = 0;
-                    break;
-                case R.id.radioGraphCT:
-                    currentAxes = 1;
-                    break;
-                case R.id.radioGraphCP:
-                    currentAxes = 2;
-                    break;
-                case R.id.radioNumbers:
-                    currentAxes = 3;
-                    break;
-            }
-            setLabelAxises();
-            drawChart();
+        switch (checkedId) {
+            case R.id.radioGraphPT:
+                currentAxes = 0;
+                break;
+            case R.id.radioGraphCT:
+                currentAxes = 1;
+                break;
+            case R.id.radioGraphCP:
+                currentAxes = 2;
+                break;
+            case R.id.radioNumbers:
+                currentAxes = 3;
+                break;
+        }
+        setLabelAxises();
+        drawChart();
         }
     };
 
@@ -136,7 +135,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void customizeGraphView() {
-        graphView.setLegendEnable(false);
+        graphView.setLegendEnable(true);
         graphView.addGraphData(graphData);
         dataView.addGraphData(graphData);
         setLabelAxises();
