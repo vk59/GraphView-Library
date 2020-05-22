@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class GraphView extends View {
@@ -41,6 +42,9 @@ public class GraphView extends View {
     private float stepGridX;
     private float stepGridY;
 
+    private long DRAWING_TIMEOUT = 200;
+    private static Date lastDraw = new Date();
+    private static Date thisDraw;
 
     public GraphView(Context context) {
         super(context);
@@ -84,7 +88,10 @@ public class GraphView extends View {
     }
 
     public void drawGraph() {
-        invalidate();
+        thisDraw = new Date();
+        if (thisDraw.getTime() - lastDraw.getTime() >= DRAWING_TIMEOUT) {
+            invalidate();
+        }
     }
 
     public void setLegendEnable(boolean legendEnable) {
@@ -119,6 +126,7 @@ public class GraphView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        lastDraw = thisDraw;
         drawView(canvas);
     }
 
