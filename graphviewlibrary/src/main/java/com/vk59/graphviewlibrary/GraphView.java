@@ -43,8 +43,8 @@ public class GraphView extends View {
     private float stepGridY;
 
     private long DRAWING_TIMEOUT = 200;
-    private static Date lastDraw = new Date();
-    private static Date thisDraw;
+    private static long lastDraw = System.currentTimeMillis();
+    private static long thisDraw;
 
     public GraphView(Context context) {
         super(context);
@@ -88,8 +88,8 @@ public class GraphView extends View {
     }
 
     public void drawGraph() {
-        thisDraw = new Date();
-        if (thisDraw.getTime() - lastDraw.getTime() >= DRAWING_TIMEOUT) {
+        thisDraw = System.currentTimeMillis();
+        if (thisDraw - lastDraw >= DRAWING_TIMEOUT) {
             invalidate();
         }
     }
