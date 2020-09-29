@@ -21,18 +21,19 @@ dependencies {
 
 ## Quick start
 #### 1. Firstly, you have to declare a variable of GraphData type. It's necessary to show your data correctly.
-The first parameter is ArrayList of Moments (every Moment contain X and Y coordinate of the point on Graph).
-But it isn't necessary to fill the ArrayList right now (but you can)
+The first parameter is ArrayList of Moments (every Moment contains X and Y coordinate of the Graph's point).
+But it isn't necessary to fill the ArrayList right now (but you can).
 ```java
 private graphData = new GraphData(new ArrayList<Moment>, Color.rgb(61, 244, 165), "Graph №1");
 ```
 
-#### 2. OK, it's pretty easy. Then we have to fill our GraphData with Moments. It's easy too:
+#### 2. OK, it's pretty easy. Then we have to fill our GraphData with points. It's easy too:
 ```java
 graphData.addData(X, Y);
 ```
+There is float variable  X and Y. 
 
-#### 3. There is float variable  X and Y. Or you can add several data using this method:
+#### 3. Or you can add several data using this method:
 ```java
 graphData.setData(arrayListOfMoments);
 ```
@@ -50,7 +51,7 @@ That's all! Your graph is on the display.
 ```java
 graphView.clear;
 ```
-Now graphView forget about all the GraphData objects. Of course, your Data is still saved (in graphData variable). You can add new Moment and draw that again.
+Now graphView forget about all the GraphData objects. Of course, your Data is still saved (in graphData variable). You can add new Moment (point) to graphData, set that to graphView again and draw that.
 
 #### 6. If you want to draw several graphs, you should declare several GraphData variables and add that to GraphView:
 ```java
